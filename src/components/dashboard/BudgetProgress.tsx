@@ -6,9 +6,14 @@ import { formatCurrency } from "@/lib/utils";
 interface BudgetProgressProps {
   used: number;
   limit: number;
+  frequency?: "daily" | "weekly" | "monthly";
 }
 
-export default function BudgetProgress({ used, limit }: BudgetProgressProps) {
+export default function BudgetProgress({
+  used,
+  limit,
+  frequency = "monthly",
+}: BudgetProgressProps) {
   const percentage = Math.min(100, Math.max(0, (used / limit) * 100));
   const isOverBudget = used > limit;
 

@@ -90,7 +90,9 @@ export default function ExpenseBarChart({
                 borderRadius: "8px",
                 fontSize: "14px",
               }}
-              formatter={(value: number) => formatCurrency(value)}
+              formatter={(value: number | undefined) =>
+                formatCurrency(value || 0)
+              }
             />
             <Bar dataKey="value" radius={[8, 8, 0, 0]}>
               {chartData.map((_entry, index) => (

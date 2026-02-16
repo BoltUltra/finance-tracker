@@ -346,7 +346,7 @@ export function AddTransactionDrawer({
                             key={cat.id}
                             onClick={() => {
                               trigger("selection");
-                              setSelectedCategory(cat);
+                              setSelectedCategory(cat as any);
                               setSelectedSubCategory(null);
                             }}
                             className={clsx(

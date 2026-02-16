@@ -1,6 +1,6 @@
 "use client";
 
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, getBudgetRange, getPastPeriods } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
 import { useUserData } from "@/hooks/useUserData";
 import { useCategories } from "@/hooks/useCategories";
@@ -12,11 +12,14 @@ import {
   where,
   getDocs,
   onSnapshot,
+  orderBy,
+  limit,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { SpendingInsightHeader } from "@/components/budget/SpendingInsightHeader";
 import { BudgetOverview } from "@/components/budget/BudgetOverview";
 import { BudgetCategoryList } from "@/components/budget/BudgetCategoryList";
+import { BudgetHistory } from "@/components/budget/BudgetHistory";
 
 export default function BudgetPage() {
   const { user } = useAuth();
@@ -26,29 +29,34 @@ export default function BudgetPage() {
   const [transactions, setTransactions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const budget = userData?.budget?.amount ?? userData?.monthlyBudget ?? 6000;
+  const frequency = userData?.budget?.frequency ?? "monthly";
+
   useEffect(() => {
     if (!user) return;
 
-    const now = new Date();
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    // Get the start date for the active budget period to calculate "Spent"
+    const { start: currentPeriodStart } = getBudgetRange(frequency);
 
+    // Get the start date for history (5 periods back)
+    const periods = getPastPeriods(frequency, 5);
+    const historyStart = periods[periods.length - 1].start; // Oldest start date
+
+    // Query mostly everything for history
     const q = query(
       collection(db, "transactions"),
       where("userId", "==", user.uid),
+      where("date", ">=", historyStart), // Fetch enough for history
+      orderBy("date", "desc"),
     );
 
     setLoading(true);
     const unsubscribe = onSnapshot(
       q,
       (snapshot) => {
-        const txs = snapshot.docs
-          .map((doc) => ({ id: doc.id, ...doc.data() }) as any)
-          .filter((tx) => {
-            const txDate = tx.date?.toDate
-              ? tx.date.toDate()
-              : new Date(tx.date);
-            return txDate >= startOfMonth;
-          });
+        const txs = snapshot.docs.map(
+          (doc) => ({ id: doc.id, ...doc.data() }) as any,
+        );
 
         setTransactions(txs);
         setLoading(false);
@@ -60,7 +68,7 @@ export default function BudgetPage() {
     );
 
     return () => unsubscribe();
-  }, [user]);
+  }, [user, frequency]);
 
   if (userLoading || catLoading || loading) {
     return (
@@ -70,26 +78,31 @@ export default function BudgetPage() {
     );
   }
 
-  // Calculate Spending
-  // Map category ID -> Spend
+  // Calculate Spending for CURRENT period
+  const { start: currentPeriodStart } = getBudgetRange(frequency);
+  const currentPeriodTransactions = transactions.filter((tx) => {
+    const txDate = tx.date?.toDate ? tx.date.toDate() : new Date(tx.date);
+    return txDate >= currentPeriodStart;
+  });
+
+  // Map category ID -> Spend (Current Period)
   const spendMap: Record<string, number> = {};
-  transactions.forEach((tx: any) => {
+  currentPeriodTransactions.forEach((tx: any) => {
     if (tx.type === "expense") {
-      const catId = tx.category || "other"; // Fixed: use 'category' field
+      const catId = tx.category || "other";
       spendMap[catId] = (spendMap[catId] || 0) + tx.amount;
     }
   });
 
   const totalSpent = Object.values(spendMap).reduce((a, b) => a + b, 0);
-  const totalBudget = userData?.monthlyBudget || 6000;
 
   // Prepare List Data
   const categoryList = categories
     .map((cat) => {
       const spent = spendMap[cat.id] || 0;
       const allocated = userData?.categoryBudgets?.[cat.id] || 0;
-      // Count transactions for this category
-      const count = transactions.filter(
+      // Count transactions for this category (Current Period)
+      const count = currentPeriodTransactions.filter(
         (t) => t.category === cat.id && t.type === "expense",
       ).length;
 
@@ -118,13 +131,21 @@ export default function BudgetPage() {
       <SpendingInsightHeader />
 
       <BudgetOverview
-        totalBudget={totalBudget}
+        totalBudget={budget}
         totalSpent={totalSpent}
         categorySpending={chartData}
         initialAllocations={userData?.categoryBudgets}
+        frequency={frequency}
       />
 
-      <BudgetCategoryList data={categoryList} />
+      <div className="grid gap-6 md:grid-cols-2">
+        <BudgetHistory
+          transactions={transactions}
+          totalBudget={budget}
+          frequency={frequency}
+        />
+        <BudgetCategoryList data={categoryList} />
+      </div>
     </div>
   );
 }

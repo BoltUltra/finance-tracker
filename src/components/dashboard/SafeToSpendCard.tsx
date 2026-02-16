@@ -6,12 +6,21 @@ import { formatCurrency } from "@/lib/utils";
 interface SafeToSpendCardProps {
   amount: number;
   isDanger?: boolean;
+  frequency?: "daily" | "weekly" | "monthly";
 }
 
 export default function SafeToSpendCard({
   amount,
   isDanger = false,
+  frequency = "monthly",
 }: SafeToSpendCardProps) {
+  const label =
+    frequency === "daily"
+      ? "today"
+      : frequency === "weekly"
+        ? "this week"
+        : "Safe to Spend";
+
   return (
     <div
       className={`relative overflow-hidden rounded-xl p-6 shadow-sm transition-all ${isDanger ? "bg-red-50 border border-red-100 dark:bg-red-900/10 dark:border-red-900" : "bg-emerald-50 border border-emerald-100 dark:bg-emerald-900/10 dark:border-emerald-900"}`}
@@ -25,9 +34,9 @@ export default function SafeToSpendCard({
               <ShieldCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
             )}
             <h3
-              className={`text-sm font-medium ${isDanger ? "text-red-600" : "text-emerald-700 dark:text-emerald-300"}`}
+              className={`text-sm font-medium ${isDanger ? "text-red-600" : "text-emerald-700 dark:text-emerald-300"} capitalize`}
             >
-              Safe to Spend
+              Safe to spend {frequency !== "monthly" ? label : ""}
             </h3>
           </div>
           <p
@@ -38,7 +47,7 @@ export default function SafeToSpendCard({
           <p
             className={`mt-1 text-xs ${isDanger ? "text-red-500" : "text-emerald-600 dark:text-emerald-400/70"}`}
           >
-            (Liquid Assets - Remaining Budget)
+            (Liquid Assets - {frequency} budget left)
           </p>
         </div>
       </div>

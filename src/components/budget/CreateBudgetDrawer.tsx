@@ -39,7 +39,13 @@ export function CreateBudgetDrawer({
   const { userData } = useUserData();
 
   const [totalBudget, setTotalBudget] = useState(
-    initialBudget ?? userData?.monthlyBudget ?? 6000,
+    initialBudget ??
+      userData?.budget?.amount ??
+      userData?.monthlyBudget ??
+      6000,
+  );
+  const [frequency, setFrequency] = useState<"daily" | "weekly" | "monthly">(
+    userData?.budget?.frequency ?? "monthly",
   );
   const [allocations, setAllocations] = useState<Record<string, number>>(
     initialAllocations ?? userData?.categoryBudgets ?? {},
@@ -49,9 +55,13 @@ export function CreateBudgetDrawer({
   useEffect(() => {
     if (open) {
       if (initialBudget !== undefined) setTotalBudget(initialBudget);
+      if (userData?.budget?.amount !== undefined)
+        setTotalBudget(userData.budget.amount);
+      if (userData?.budget?.frequency !== undefined)
+        setFrequency(userData.budget.frequency);
       if (initialAllocations !== undefined) setAllocations(initialAllocations);
     }
-  }, [open, initialBudget, initialAllocations]);
+  }, [open, initialBudget, initialAllocations, userData]);
   const [loading, setLoading] = useState(false);
 
   const handleAllocationChange = (categoryId: string, amount: number) => {
@@ -74,7 +84,10 @@ export function CreateBudgetDrawer({
     try {
       const userRef = doc(db, "users", user.uid);
       await updateDoc(userRef, {
-        monthlyBudget: totalBudget,
+        budget: {
+          amount: totalBudget,
+          frequency: frequency,
+        },
         categoryBudgets: allocations,
       });
       setLoading(false);
@@ -107,6 +120,24 @@ export function CreateBudgetDrawer({
           </DrawerHeader>
         </div>
 
+        <div className="flex-none px-6 pb-2">
+          <div className="flex p-1 bg-gray-100 dark:bg-gray-800 rounded-lg">
+            {(["daily", "weekly", "monthly"] as const).map((freq) => (
+              <button
+                key={freq}
+                onClick={() => setFrequency(freq)}
+                className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all capitalize ${
+                  frequency === freq
+                    ? "bg-white dark:bg-gray-700 text-indigo-600 dark:text-indigo-400 shadow-sm"
+                    : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
+                }`}
+              >
+                {freq}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="flex-1 overflow-y-auto px-6 pb-4">
           <BudgetInput amount={totalBudget} onChange={setTotalBudget} />
           <div className="mt-6">
@@ -120,7 +151,12 @@ export function CreateBudgetDrawer({
         <div className="flex-none border-t border-gray-100 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
           <div className="mx-auto mb-4 flex w-full max-w-xs items-center justify-center gap-2 rounded-full bg-gray-50 py-2 dark:bg-gray-800">
             <span className="text-xs text-gray-500 dark:text-gray-400">
-              Amount left:
+              {frequency === "daily"
+                ? "Daily"
+                : frequency === "weekly"
+                  ? "Weekly"
+                  : "Monthly"}{" "}
+              amount left:
             </span>
             <span
               className={`text-xs font-bold ${isOverBudget ? "text-red-500" : "text-gray-900 dark:text-white"}`}
@@ -133,7 +169,7 @@ export function CreateBudgetDrawer({
             disabled={loading || totalBudget === 0}
             className="w-full rounded-full bg-indigo-600 py-6 text-lg font-semibold text-white hover:bg-indigo-700 disabled:opacity-50 dark:bg-indigo-500 dark:hover:bg-indigo-600"
           >
-            {loading ? <Loader2 className="animate-spin" /> : "Get Started"}
+            {loading ? <Loader2 className="animate-spin" /> : "Save Budget"}
           </Button>
         </div>
       </DrawerContent>

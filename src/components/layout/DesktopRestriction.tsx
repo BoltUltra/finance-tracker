@@ -2,7 +2,7 @@ import { Smartphone } from "lucide-react";
 
 export function DesktopRestriction() {
   return (
-    <div className="hidden lg:flex fixed inset-0 z-[100] bg-gray-50 dark:bg-gray-950 flex-col items-center justify-center p-8 text-center">
+    <div className="hidden lg:flex fixed inset-0 z-100 bg-gray-50 dark:bg-gray-950 flex-col items-center justify-center p-8 text-center">
       <div className="max-w-md space-y-6">
         <div className="mx-auto w-20 h-20 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center">
           <Smartphone className="w-10 h-10 text-indigo-600 dark:text-indigo-400" />

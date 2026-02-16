@@ -115,13 +115,6 @@ export function EditTransactionDrawer({
         type,
         sourceAccount: account,
         destinationAccount: undefined, // meaningful only for transfer
-        category: selectedCategory?.id || "transfer", // Store ID preference? actually current app stores Labels mostly relative to config.
-        // But wait, `addTransaction` stored `selectedCategory?.id`.
-        // If `selectedCategory.id` is used, then reading it back needs to match ID.
-        // My resolver above checks both.
-
-        // Note: The `updateTransaction` signature expects a partial Transaction object.
-        // The `Transaction` type usually has `category` as string.
         category: selectedCategory?.label || "transfer", // Storing Label to maintain consistency with historical data if that's what was used.
         // Wait, `AddTransactionDrawer` stored `selectedCategory?.id`.
         // `TransactionItem` displays `t.category`. If ID is stored, it displays ID?

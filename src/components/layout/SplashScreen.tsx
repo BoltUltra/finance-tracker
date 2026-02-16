@@ -7,8 +7,8 @@ export function SplashScreen() {
     <div className="fixed inset-0 z-100 flex flex-col items-center justify-center bg-white dark:bg-gray-950 animate-in fade-in duration-300">
       <div className="relative">
         <div className="absolute inset-0 bg-indigo-500 rounded-full blur-2xl opacity-20 animate-pulse" />
-        <div className="relative bg-linear-to-tr from-indigo-600 to-purple-600 rounded-2xl p-4 shadow-xl">
-          <img src="/logo.png" alt="Logo" className="w-12 h-12" />
+        <div className="relative bg-linear-to-tr from-indigo-600 to-purple-600 rounded-2xl p-3 shadow-xl">
+          <img src="/logo.png" alt="Logo" className="w-8 h-8" />
         </div>
       </div>
 

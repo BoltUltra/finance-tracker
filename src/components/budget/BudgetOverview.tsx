@@ -12,6 +12,7 @@ interface BudgetOverviewProps {
   totalSpent: number;
   categorySpending: { name: string; value: number; color: string }[];
   initialAllocations?: Record<string, number>;
+  frequency?: "daily" | "weekly" | "monthly";
 }
 
 export function BudgetOverview({
@@ -19,6 +20,7 @@ export function BudgetOverview({
   totalSpent,
   categorySpending,
   initialAllocations,
+  frequency = "monthly",
 }: BudgetOverviewProps) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const leftToSpend = Math.max(0, totalBudget - totalSpent);
@@ -56,8 +58,8 @@ export function BudgetOverview({
       <div className="bg-white dark:bg-gray-900 rounded-[32px] p-6 shadow-sm">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
-              Monthly budget
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1 capitalize">
+              {frequency} budget
             </p>
             <p className="text-3xl font-bold text-gray-900 dark:text-white">
               {formatCurrency(totalBudget)}

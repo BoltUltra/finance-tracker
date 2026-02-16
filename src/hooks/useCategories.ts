@@ -24,10 +24,10 @@ export interface CustomCategory {
   subCategories?: string[];
 }
 
-export interface AppCategory extends Omit<Category, "icon"> {
+export interface AppCategory extends Omit<Category, "icon" | "color"> {
   icon: any;
   isCustom?: boolean;
-  color?: string;
+  color: string;
   iconName?: string; // Helpful for editing
 }
 

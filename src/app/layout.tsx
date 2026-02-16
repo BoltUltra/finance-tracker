@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Toaster } from "sonner";
 import { DesktopRestriction } from "@/components/layout/DesktopRestriction";
 import { PWAInstallPrompt } from "@/components/pwa/PWAInstallPrompt";
+import { OfflineIndicator } from "@/components/pwa/OfflineIndicator";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
@@ -32,6 +33,7 @@ export default function RootLayout({
           <DesktopRestriction />
           <AuthProvider>
             <PWAInstallPrompt />
+            <OfflineIndicator />
             {children}
           </AuthProvider>
           <Toaster />

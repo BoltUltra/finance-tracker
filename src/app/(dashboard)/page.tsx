@@ -25,7 +25,7 @@ import {
 import { db } from "@/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
 import { Transaction } from "@/types/transaction";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, getBudgetRange } from "@/lib/utils";
 
 import { MobileHeader } from "@/components/mobile/MobileHeader";
 import { HomeBalanceCarousel } from "@/components/mobile/HomeBalanceCarousel";
@@ -43,13 +43,15 @@ export default function DashboardPage() {
   // Budget State
   const [budgetUsed, setBudgetUsed] = useState(0);
 
-  // Fetch current month's linked expenses
+  const budget = userData?.budget?.amount ?? userData?.monthlyBudget ?? 0;
+  const frequency = userData?.budget?.frequency ?? "monthly";
+
+  // Fetch current period's linked expenses
   useEffect(() => {
     async function fetchBudgetUsage() {
       if (!user) return;
 
-      const now = new Date();
-      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+      const { start } = getBudgetRange(frequency);
 
       try {
         const q = query(
@@ -66,7 +68,7 @@ export default function DashboardPage() {
           if (
             data.type === "expense" &&
             data.isBudgetLinked !== false &&
-            txDate >= startOfMonth
+            txDate >= start
           ) {
             used += data.amount;
           }
@@ -80,7 +82,7 @@ export default function DashboardPage() {
     if (user) {
       fetchBudgetUsage();
     }
-  }, [user, isDrawerOpen]);
+  }, [user, isDrawerOpen, frequency]);
 
   if (loading) {
     return (
@@ -90,22 +92,7 @@ export default function DashboardPage() {
     );
   }
 
-  if (error) {
-    // ... keep error handling ...
-    return (
-      <div className="flex flex-col h-[50vh] items-center justify-center gap-4 text-center px-4">
-        <p>Error loading dashboard</p>
-        <button
-          onClick={() => window.location.reload()}
-          className="text-blue-600"
-        >
-          Retry
-        </button>
-      </div>
-    );
-  }
-
-  const monthlyBudget = userData?.monthlyBudget || 0;
+  // ... (keep error handling)
 
   return (
     <div className=" min-h-screen">
@@ -124,12 +111,16 @@ export default function DashboardPage() {
         />
 
         {/* Show Budget Promo if no budget set, otherwise show Progress */}
-        {monthlyBudget > 0 ? (
+        {budget > 0 ? (
           <div className="px-6">
-            <h3 className="mb-2 text-lg font-bold text-gray-900 dark:text-gray-100">
-              Monthly Budget
+            <h3 className="mb-2 text-lg font-bold text-gray-900 dark:text-gray-100 capitalize">
+              {frequency} Budget
             </h3>
-            <BudgetProgress used={budgetUsed} limit={monthlyBudget} />
+            <BudgetProgress
+              used={budgetUsed}
+              limit={budget}
+              frequency={frequency}
+            />
           </div>
         ) : (
           <BudgetPromo />
