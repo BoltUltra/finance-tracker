@@ -1,6 +1,6 @@
 {
-  "name": "Personal Budget Tracker",
-  "short_name": "Budget",
+  "name": "Finance Tracker",
+  "short_name": "Finance Tracker",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
