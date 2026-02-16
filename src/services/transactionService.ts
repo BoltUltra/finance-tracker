@@ -6,6 +6,7 @@ import {
   runTransaction,
   serverTimestamp,
   Timestamp,
+  deleteField,
 } from "firebase/firestore";
 
 /**
@@ -147,8 +148,16 @@ export const updateTransaction = async (
         else if (oldTx.destinationAccount === "savings") savings -= oldAmount;
       }
 
-      // 2. Apply New Transaction (Merge updates with old data to get full new state)
-      const newTx = { ...oldTx, ...updates };
+      // 2. Prepare Clean Updates (Remove undefined values)
+      const cleanUpdates: any = { ...updates };
+      Object.keys(cleanUpdates).forEach((key) => {
+        if (cleanUpdates[key] === undefined) {
+          delete cleanUpdates[key];
+        }
+      });
+
+      // 3. Apply New Transaction (Merge updates with old data to get full new state)
+      const newTx = { ...oldTx, ...cleanUpdates };
       const newAmount = Number(newTx.amount);
 
       if (newTx.type === "income") {
@@ -169,12 +178,27 @@ export const updateTransaction = async (
         else if (newTx.destinationAccount === "savings") savings += newAmount;
       }
 
-      // 3. Commit Updates
-      // Check if date is updated, convert to Timestamp
-      const updatePayload: any = { ...updates };
-      if (updates.date) {
-        updatePayload.date = Timestamp.fromDate(new Date(updates.date));
+      // 4. Commit Updates
+      // Prepare final payload
+      const updatePayload: any = { ...cleanUpdates };
+
+      // Handle Date conversion
+      if (cleanUpdates.date) {
+        updatePayload.date = Timestamp.fromDate(new Date(cleanUpdates.date));
       }
+
+      // Explicitly delete fields if type changed away from transfer
+      if (newTx.type !== "transfer" && oldTx.type === "transfer") {
+        updatePayload.destinationAccount = deleteField();
+      }
+
+      // Explicitly delete subCategory if it's null (user cleared it)
+      // Note: `cleanUpdates` removed it if it was undefined, but if it was null it stays.
+      // Firestore handles null, but if we want to remove the field we use deleteField().
+      // However, our app logic often treats null as "no subcategory".
+      // Let's ensure subCategory is removed if we explicitly set it to null/undefined in logic but want field gone.
+      // Actually, standard practice: if it's not in newTx (or null), we might want to keep it or delete it.
+      // Let's stick to the specific crash fix: cleanUpdates removes undefined.
 
       txn.update(transactionRef, updatePayload);
       txn.update(userRef, {

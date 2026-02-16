@@ -38,7 +38,7 @@ export function SpendingBreakdownCard({
   return (
     <div className="mb-8 font-outfit">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-gray-900">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
           Spending breakdown
         </h2>
         {totalBudget !== undefined ? (
@@ -55,22 +55,21 @@ export function SpendingBreakdownCard({
         )}
       </div>
 
-      <div className="bg-white rounded-[24px] p-6 shadow-sm">
-        {/* ... rest of the component ... */}
+      <div className="bg-white dark:bg-gray-950 rounded-[24px] p-6 shadow-sm border">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-base font-bold text-gray-900">
+          <span className="text-base font-bold text-gray-900 dark:text-gray-50">
             {isOverBudget
               ? `${formatCurrency(overAmount)} over`
               : formatCurrency(spent)}
           </span>
           {isOverBudget && (
-            <div className="flex items-center text-xs text-orange-500 font-medium bg-orange-50 px-2 py-1 rounded-full">
+            <div className="flex items-center text-xs text-orange-500 font-medium bg-orange-50 dark:bg-orange-900 px-2 py-1 rounded-full">
               <AlertCircle className="h-3 w-3 mr-1" /> Limit exceeded
             </div>
           )}
         </div>
 
-        <div className="relative h-2 w-full bg-gray-100 rounded-full overflow-hidden mb-3">
+        <div className="relative h-2 w-full bg-gray-100 dark:bg-gray-500 rounded-full overflow-hidden mb-3">
           <div
             className="h-full rounded-full transition-all duration-500"
             style={{
@@ -80,8 +79,8 @@ export function SpendingBreakdownCard({
           />
         </div>
 
-        <div className="text-sm text-gray-500">
-          <span className="font-bold text-gray-900">
+        <div className="text-sm text-gray-500 dark:text-gray-400">
+          <span className="font-bold text-gray-900 dark:text-gray-50">
             {formatCurrency(spent)}
           </span>{" "}
           of {formatCurrency(allocated)}

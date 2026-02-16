@@ -1,0 +1,10 @@
+[
+  {
+    "origin": [
+      "http://localhost:3000",
+      "https://budget-tracker-pwa-e6059.web.app"
+    ],
+    "method": ["GET", "PUT", "POST", "DELETE", "HEAD"],
+    "maxAgeSeconds": 3600
+  }
+]

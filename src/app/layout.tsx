@@ -4,11 +4,13 @@ import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Toaster } from "sonner";
+import { DesktopRestriction } from "@/components/layout/DesktopRestriction";
+import { PWAInstallPrompt } from "@/components/pwa/PWAInstallPrompt";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "BudgetPro",
+  title: "Finance Tracker",
   description: "Personal finance tracker",
   manifest: "/manifest.json",
 };
@@ -27,7 +29,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AuthProvider>{children}</AuthProvider>
+          <DesktopRestriction />
+          <AuthProvider>
+            <PWAInstallPrompt />
+            {children}
+          </AuthProvider>
           <Toaster />
         </ThemeProvider>
       </body>

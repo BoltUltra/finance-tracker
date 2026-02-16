@@ -18,6 +18,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { clsx } from "clsx";
 
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+
 export default function CategoryDetailPage() {
   const params = useParams();
   const router = useRouter();
@@ -43,18 +45,34 @@ export default function CategoryDetailPage() {
   const [editingSub, setEditingSub] = useState<string | null>(null);
   const [editSubValue, setEditSubValue] = useState("");
 
+  // Delete confirmation state
+  const [subToDelete, setSubToDelete] = useState<string | null>(null);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   useEffect(() => {
     if (category) {
       setLabel(category.label);
     }
   }, [category]);
 
-  const handleDeleteSub = async (subLabel: string) => {
-    if (!confirm("Are you sure you want to delete this subcategory?")) return;
+  const confirmDeleteSub = (subLabel: string) => {
+    setSubToDelete(subLabel);
+    setIsDeleteOpen(true);
+  };
+
+  const handleDeleteSub = async () => {
+    if (!subToDelete) return;
+
+    setIsDeleting(true);
     try {
-      await deleteSubCategory(categoryId, subLabel);
+      await deleteSubCategory(categoryId, subToDelete);
+      setIsDeleteOpen(false);
+      setSubToDelete(null);
     } catch (e) {
       console.error(e);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -247,7 +265,7 @@ export default function CategoryDetailPage() {
                         variant="ghost"
                         className="h-8 w-8 text-gray-400 hover:text-red-600 hover:bg-red-50"
                         onClick={() =>
-                          handleDeleteSub(
+                          confirmDeleteSub(
                             typeof sub === "string" ? sub : sub.label,
                           )
                         }
@@ -293,6 +311,18 @@ export default function CategoryDetailPage() {
           </p>
         )}
       </div>
+      {/* ... existing jsx ... */}
+
+      <ConfirmDialog
+        open={isDeleteOpen}
+        onOpenChange={setIsDeleteOpen}
+        title="Delete Subcategory"
+        description={`Are you sure you want to delete '${subToDelete}'? This cannot be undone.`}
+        onConfirm={handleDeleteSub}
+        isLoading={isDeleting}
+        variant="destructive"
+        confirmText="Delete"
+      />
     </div>
   );
 }

@@ -35,7 +35,9 @@ export function BudgetOverview({
   return (
     <div className="mb-8 font-outfit">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-gray-900">Budget overview</h2>
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
+          Budget overview
+        </h2>
         <CreateBudgetDrawer
           open={isDrawerOpen}
           onOpenChange={setIsDrawerOpen}
@@ -51,20 +53,22 @@ export function BudgetOverview({
         </CreateBudgetDrawer>
       </div>
 
-      <div className="bg-white rounded-[32px] p-6 shadow-sm">
+      <div className="bg-white dark:bg-gray-900 rounded-[32px] p-6 shadow-sm">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <p className="text-sm text-gray-500 mb-1">Monthly budget</p>
-            <p className="text-3xl font-bold text-gray-900">
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+              Monthly budget
+            </p>
+            <p className="text-3xl font-bold text-gray-900 dark:text-white">
               {formatCurrency(totalBudget)}
             </p>
           </div>
-          <div className="bg-gray-100 rounded-full p-1 flex items-center">
-            <div className="bg-white rounded-full p-1.5 shadow-sm">
-              <BarChart3 className="h-4 w-4 text-gray-900" />
+          <div className="bg-gray-100 dark:bg-gray-800 rounded-full p-1 flex items-center">
+            <div className="bg-white dark:bg-gray-700 rounded-full p-1.5 shadow-sm">
+              <BarChart3 className="h-4 w-4 text-gray-900 dark:text-white" />
             </div>
             <div className="p-1.5">
-              <PieChartIcon className="h-4 w-4 text-gray-400" />
+              <PieChartIcon className="h-4 w-4 text-gray-400 dark:text-gray-500" />
             </div>
           </div>
         </div>
@@ -93,19 +97,21 @@ export function BudgetOverview({
 
           {/* Center Text */}
           <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-            <span className="text-xs font-bold text-gray-900">
+            <span className="text-xs font-bold text-gray-900 dark:text-white">
               {formatCurrency(totalSpent)}
             </span>
-            <span className="text-xs text-gray-500 mt-1">Spent</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              Spent
+            </span>
           </div>
         </div>
 
         <div className="flex items-center justify-center">
-          <div className="bg-indigo-50 rounded-full py-2 px-6">
-            <span className="text-sm font-medium text-gray-600">
+          <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-full py-2 px-6">
+            <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
               Left to spend:{" "}
             </span>
-            <span className="text-sm font-bold text-indigo-600">
+            <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">
               {formatCurrency(leftToSpend)}
             </span>
           </div>

@@ -19,8 +19,8 @@ interface BudgetCategoryListProps {
 
 export function BudgetCategoryList({ data }: BudgetCategoryListProps) {
   return (
-    <div className="bg-white rounded-[32px] p-4 shadow-sm mb-4">
-      <h3 className="text-lg font-semibold text-gray-900 mb-6 font-outfit">
+    <div className="bg-white dark:bg-gray-900 rounded-[32px] p-2 pb-4 shadow-sm mb-4">
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 font-outfit pl-3 pt-3">
         Budget category
       </h3>
 
@@ -35,10 +35,10 @@ export function BudgetCategoryList({ data }: BudgetCategoryListProps) {
             <Link
               key={category.id}
               href={`/budget/${category.id}`}
-              className="block"
+              className="block group"
             >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
+              <div className="flex items-center justify-between p-2 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                <div className="flex items-center gap-2">
                   <div
                     className="flex h-10 w-10 items-center justify-center rounded-full text-white shrink-0"
                     style={{ backgroundColor: category.color || "#9CA3AF" }}
@@ -46,10 +46,10 @@ export function BudgetCategoryList({ data }: BudgetCategoryListProps) {
                     {category.icon && <category.icon className="h-5 w-5" />}
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-gray-900">
+                    <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                       {category.label}
                     </p>
-                    <p className="text-[10px] text-gray-500">
+                    <p className="text-[10px] text-gray-500 dark:text-gray-400">
                       {transactionCount} transactions
                     </p>
                   </div>
@@ -63,10 +63,10 @@ export function BudgetCategoryList({ data }: BudgetCategoryListProps) {
                     {isOverBudget && (
                       <AlertCircle className="h-4 w-4 text-red-500" />
                     )}
-                    <span className="text-xs font-bold text-gray-900">
+                    <span className="text-xs font-bold text-gray-900 dark:text-gray-100">
                       {formatCurrency(spent)}
                     </span>
-                    <span className="text-xs text-gray-400">
+                    <span className="text-xs text-gray-400 dark:text-gray-500">
                       / {formatCurrency(allocated)}
                     </span>
                   </div>
@@ -78,7 +78,7 @@ export function BudgetCategoryList({ data }: BudgetCategoryListProps) {
         })}
 
         {data.length === 0 && (
-          <p className="text-center text-gray-500 text-sm py-4">
+          <p className="text-center text-gray-500 dark:text-gray-400 text-sm py-4">
             No categories found.
           </p>
         )}

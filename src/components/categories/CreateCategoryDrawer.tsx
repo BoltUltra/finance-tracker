@@ -20,28 +20,10 @@ import * as Icons from "lucide-react";
 import { clsx } from "clsx";
 
 // Icon options map
-const ICONS = [
-  "ShoppingBag",
-  "Utensils",
-  "Car",
-  "Home",
-  "Zap",
-  "HeartPulse",
-  "GraduationCap",
-  "Gamepad2",
-  "Plane",
-  "Briefcase",
-  "Gift",
-  "MoreHorizontal",
-  "Dumbbell",
-  "Dog",
-  "Music",
-  "Coffee",
-  "Smartphone",
-  "Wifi",
-  "CreditCard",
-  "Landmark",
-];
+import { CATEGORY_ICONS } from "@/constants/icons";
+
+// Icon options map
+const ICONS = CATEGORY_ICONS;
 
 // Color options map
 const COLORS = [
@@ -79,6 +61,11 @@ export function CreateCategoryDrawer({
   const [selectedIcon, setSelectedIcon] = useState("ShoppingBag");
   const [selectedColor, setSelectedColor] = useState("bg-purple-500");
   const [loading, setLoading] = useState(false);
+  const [iconSearch, setIconSearch] = useState("");
+
+  const filteredIcons = ICONS.filter((icon) =>
+    icon.toLowerCase().includes(iconSearch.toLowerCase()),
+  );
 
   // Dynamic Icon Renderer
   const SelectedIconComponent =
@@ -124,7 +111,7 @@ export function CreateCategoryDrawer({
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8 rounded-full"
+                className="h-8 w-8 rounded-full absolute top-5 right-5"
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -156,7 +143,7 @@ export function CreateCategoryDrawer({
             {/* Color Picker */}
             <div className="space-y-2">
               <label className="text-sm font-medium">Select color</label>
-              <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+              <div className="flex gap-3 overflow-x-auto py-2 scrollbar-hide">
                 {COLORS.map((color) => (
                   <button
                     key={color}
@@ -174,17 +161,31 @@ export function CreateCategoryDrawer({
             </div>
 
             {/* Icon Picker Grid */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Select Icon</label>
-              <div className="grid grid-cols-5 gap-3">
-                {ICONS.map((iconName) => {
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <label className="text-sm font-medium">Select Icon</label>
+                <span className="text-xs text-gray-400">
+                  {filteredIcons.length} icons
+                </span>
+              </div>
+
+              <Input
+                placeholder="Search icons..."
+                value={iconSearch}
+                onChange={(e) => setIconSearch(e.target.value)}
+                className="bg-gray-50 border-gray-100 text-sm"
+              />
+
+              <div className="grid grid-cols-4 sm:grid-cols-5 gap-3 max-h-75 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-200">
+                {filteredIcons.map((iconName) => {
                   const Icon = (Icons as any)[iconName];
+                  if (!Icon) return null;
                   return (
                     <button
                       key={iconName}
                       onClick={() => setSelectedIcon(iconName)}
                       className={clsx(
-                        "flex items-center justify-center p-2 rounded-xl transition-all",
+                        "flex flex-col items-center justify-center p-3 rounded-xl transition-all gap-2 h-20",
                         selectedIcon === iconName
                           ? "bg-gray-100 dark:bg-gray-800 ring-1 ring-gray-300"
                           : "hover:bg-gray-50",
@@ -198,9 +199,17 @@ export function CreateCategoryDrawer({
                             : "text-gray-500",
                         )}
                       />
+                      <span className="text-[10px] text-gray-500 truncate w-full text-center">
+                        {iconName}
+                      </span>
                     </button>
                   );
                 })}
+                {filteredIcons.length === 0 && (
+                  <div className="col-span-full py-8 text-center text-sm text-gray-500">
+                    No icons found for "{iconSearch}"
+                  </div>
+                )}
               </div>
             </div>
 

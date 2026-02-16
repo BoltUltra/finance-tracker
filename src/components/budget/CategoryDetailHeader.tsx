@@ -18,7 +18,9 @@ export function CategoryDetailHeader() {
         <ChevronLeft className="h-6 w-6" />
       </Button>
 
-      <h1 className="text-lg font-semibold text-gray-900">Category detail</h1>
+      <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
+        Category detail
+      </h1>
 
       {/* <Button
         variant="ghost"

@@ -22,9 +22,12 @@ export function SettingsItem({
   className,
   destructive = false,
 }: SettingsItemProps) {
+  const { trigger } = useHaptic();
+
   const Content = (
     <div
-      className={`flex items-center justify-between p-4 bg-white rounded-2xl border border-gray-100 shadow-sm active:scale-[0.98] transition-all hover:bg-gray-50 ${className}`}
+      className={`flex items-center justify-between p-4 bg-white dark:bg-gray-950 rounded-2xl border border-gray-100 shadow-sm active:scale-[0.98] transition-all hover:bg-gray-50 dark:hover:bg-gray-900 ${className}`}
+      onClick={() => trigger("selection")}
     >
       <div className="flex items-center gap-4">
         <div

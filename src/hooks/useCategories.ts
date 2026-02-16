@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useAuth } from "@/context/AuthContext";
 import {
   collection,
@@ -180,33 +180,33 @@ export function useCategories() {
   // Merge Strategy:
   // 1. Start with Default Categories
   // 2. Override with Custom Categories (Firestore) if ID matches
-  const mergedCategories = CATEGORY_CONFIG.map((defaultCat) => {
-    const customOverride = customCategories.find((c) => c.id === defaultCat.id);
-    if (customOverride) {
-      return {
-        ...defaultCat,
-        ...customOverride,
-        // Keep the original icon component from default if available,
-        // unless we securely stored a valid iconName for it (which we might not have for defaults)
-        icon: defaultCat.icon,
-        // Use subcategories from Firestore (which includes the added ones)
-        subCategories: customOverride.subCategories,
-        // Mark as custom true so we know it's editable in some ways?
-        // Actually, default categories even if shadowed shouldn't be fully 'isCustom' renaming wise maybe?
-        // But 'isCustom' usually implies "Created by user".
-        // Let's use a new flag or just check ID presence in CONFIG to determine "isDefaultOriginally".
-        isCustom: false, // It remains a default category fundamentally
-      };
-    }
-    return { ...defaultCat, isCustom: false };
-  });
+  const allCategories = useMemo(() => {
+    const mergedCategories = CATEGORY_CONFIG.map((defaultCat) => {
+      const customOverride = customCategories.find(
+        (c) => c.id === defaultCat.id,
+      );
+      if (customOverride) {
+        return {
+          ...defaultCat,
+          ...customOverride,
+          // Keep the original icon component from default if available,
+          // unless we securely stored a valid iconName for it (which we might not have for defaults)
+          icon: defaultCat.icon,
+          // Use subcategories from Firestore (which includes the added ones)
+          subCategories: customOverride.subCategories,
+          isCustom: false, // It remains a default category fundamentally
+        };
+      }
+      return { ...defaultCat, isCustom: false };
+    });
 
-  // Add purely custom categories (those not in CONFIG)
-  const purelyCustom = customCategories.filter(
-    (c) => !CATEGORY_CONFIG.find((def) => def.id === c.id),
-  );
+    // Add purely custom categories (those not in CONFIG)
+    const purelyCustom = customCategories.filter(
+      (c) => !CATEGORY_CONFIG.find((def) => def.id === c.id),
+    );
 
-  const allCategories = [...mergedCategories, ...purelyCustom];
+    return [...mergedCategories, ...purelyCustom];
+  }, [customCategories]);
 
   return {
     categories: allCategories,

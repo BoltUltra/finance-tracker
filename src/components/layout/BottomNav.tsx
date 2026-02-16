@@ -18,7 +18,7 @@ export default function BottomNav() {
   const { trigger } = useHaptic();
 
   return (
-    <nav className="md:hidden fixed bottom-6 left-6 right-6 bg-white/90 backdrop-blur-lg border border-gray-200/50 shadow-2xl rounded-2xl z-50">
+    <nav className="md:hidden fixed bottom-6 left-6 right-6 bg-white/90 dark:bg-gray-900/90 backdrop-blur-lg border border-gray-200/50 dark:border-white/10 shadow-2xl rounded-2xl z-50 transition-all duration-300">
       <div className="flex justify-around items-center h-16 px-2">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -29,10 +29,10 @@ export default function BottomNav() {
               href={item.href}
               onClick={() => trigger("selection")}
               className={clsx(
-                "flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors duration-200",
+                "flex flex-col items-center justify-center w-full h-full space-y-1 transition-all duration-200",
                 isActive
-                  ? "text-indigo-600"
-                  : "text-gray-400 hover:text-gray-600",
+                  ? "text-indigo-600 dark:text-indigo-400 scale-110"
+                  : "text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300",
               )}
             >
               <Icon

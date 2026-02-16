@@ -64,46 +64,48 @@ export default function ExpenseBarChart({
   }
 
   return (
-    <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm dark:bg-gray-900 dark:border-gray-800">
-      <h3 className="mb-6 text-lg font-semibold text-gray-900 dark:text-gray-100">
+    <div className="rounded-xl border border-gray-100 bg-white py-6 shadow-sm dark:bg-gray-900 dark:border-gray-800">
+      <h3 className="mb-6 text-lg font-semibold text-gray-900 dark:text-gray-100 px-4">
         Expenses by Category
       </h3>
-      <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-          <XAxis
-            dataKey="name"
-            tick={{ fill: "#6b7280", fontSize: 12 }}
-            angle={-45}
-            textAnchor="end"
-            height={80}
-          />
-          <YAxis
-            tick={{ fill: "#6b7280", fontSize: 12 }}
-            tickFormatter={(value) => `₦${value}`}
-          />
-          <Tooltip
-            contentStyle={{
-              backgroundColor: "#fff",
-              border: "1px solid #e5e7eb",
-              borderRadius: "8px",
-              fontSize: "14px",
-            }}
-            formatter={(value: number) => formatCurrency(value)}
-          />
-          <Bar dataKey="value" radius={[8, 8, 0, 0]}>
-            {chartData.map((_entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
-            ))}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
+      <div className="pr-4">
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={chartData}>
+            {/* <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" /> */}
+            <XAxis
+              dataKey="name"
+              tick={{ fill: "#6b7280", fontSize: 10 }}
+              angle={0}
+              textAnchor="end"
+              height={80}
+            />
+            <YAxis
+              tick={{ fill: "#6b7280", fontSize: 10 }}
+              tickFormatter={(value) => `₦${value}`}
+            />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "#fff",
+                border: "1px solid #e5e7eb",
+                borderRadius: "8px",
+                fontSize: "14px",
+              }}
+              formatter={(value: number) => formatCurrency(value)}
+            />
+            <Bar dataKey="value" radius={[8, 8, 0, 0]}>
+              {chartData.map((_entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
 
       {/* Legend */}
-      <div className="mt-6 grid grid-cols-2 gap-3">
+      <div className="mt-6 grid grid-cols-2 gap-3 px-4">
         {chartData.map((entry, index) => (
           <div key={entry.name} className="flex items-center gap-2">
             <div
@@ -111,7 +113,7 @@ export default function ExpenseBarChart({
               style={{ backgroundColor: COLORS[index % COLORS.length] }}
             />
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-medium text-gray-700 dark:text-gray-300 truncate">
+              <p className="text-xs font-medium text-gray-700 dark:text-gray-300 truncate capitalize">
                 {entry.name}
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">

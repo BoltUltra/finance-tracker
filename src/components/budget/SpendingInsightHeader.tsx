@@ -25,12 +25,12 @@ export function SpendingInsightHeader() {
         <ChevronLeft className="h-6 w-6" />
       </Button>
 
-      <h1 className="text-lg font-semibold text-gray-900 font-outfit">
+      <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-50 font-outfit">
         Spending insight
       </h1>
 
       <Select defaultValue="jan">
-        <SelectTrigger className="w-[80px] h-9 rounded-full bg-white border-0 text-gray-900 font-medium">
+        <SelectTrigger className="w-20 h-9 rounded-full bg-white border-0 text-gray-900 dark:text-gray-50 font-medium">
           <SelectValue placeholder="Month" />
         </SelectTrigger>
         <SelectContent>

@@ -26,7 +26,7 @@ export function BudgetInput({ amount, onChange }: BudgetInputProps) {
             type="number"
             value={amount === 0 ? "" : amount}
             onChange={(e) => onChange(Number(e.target.value))}
-            className="h-auto w-40 border-0 bg-transparent p-0 text-center text-5xl font-bold text-gray-900 focus-visible:ring-0 dark:text-white placeholder:text-gray-300 dark:placeholder:text-gray-700"
+            className="h-auto w-52 border-0 bg-transparent p-0 text-center text-5xl font-bold text-gray-900 focus-visible:ring-0 dark:text-white placeholder:text-gray-300 dark:placeholder:text-gray-700"
             placeholder="0"
           />
         </div>

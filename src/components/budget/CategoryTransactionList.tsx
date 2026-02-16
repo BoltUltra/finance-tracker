@@ -32,9 +32,11 @@ export function CategoryTransactionList({
 
   return (
     <div className="mb-20 font-outfit">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Transactions</h3>
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50 mb-4">
+        Transactions
+      </h3>
 
-      <div className="bg-white rounded-[24px] p-2 shadow-sm">
+      <div className="bg-white dark:bg-gray-950 rounded-[24px] p-2 shadow-sm border border-gray-200 dark:border-gray-700">
         {transactions.length === 0 ? (
           <div className="text-center py-8 text-gray-500 text-sm">
             No transactions yet
@@ -56,15 +58,15 @@ export function CategoryTransactionList({
                     <ArrowUpRight className="h-5 w-5 text-gray-500 transform rotate-45" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-gray-900">
+                    <p className="text-sm font-semibold text-gray-900 dark:text-gray-50">
                       {getSubCategoryLabel(tx.subCategory)}
                     </p>
-                    <p className="text-xs text-gray-400">
+                    <p className="text-xs text-gray-400 dark:text-gray-400">
                       {format(txDate, "MMM d, h:mm a")}
                     </p>
                   </div>
                 </div>
-                <span className="text-sm font-medium text-gray-900">
+                <span className="text-sm font-medium text-gray-900 dark:text-gray-50">
                   - {formatCurrency(tx.amount)}
                 </span>
               </div>

@@ -16,20 +16,20 @@ export default function BudgetProgress({ used, limit }: BudgetProgressProps) {
     <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm dark:bg-gray-900 dark:border-gray-800">
       <div className="mb-4 flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+          {/* <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
             Monthly Budget
-          </h3>
-          <p className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+          </h3> */}
+          <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
             {formatCurrency(used)}
-            <span className="ml-1 text-sm font-normal text-gray-400">
+            <span className="ml-1 text-xs font-normal text-gray-400">
               / {formatCurrency(limit)}
             </span>
           </p>
         </div>
         <div
-          className={`rounded-full px-3 py-1 text-xs font-medium ${isOverBudget ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"}`}
+          className={`rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap ${isOverBudget ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"}`}
         >
-          {percentage.toFixed(0)}% Used
+          {percentage.toFixed(0)}% used
         </div>
       </div>
 

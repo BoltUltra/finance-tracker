@@ -50,7 +50,7 @@ export function CategoryAllocationList({
 
       <div className="space-y-4">
         {activeCategories.length === 0 && (
-          <p className="text-center text-sm text-gray-500 py-4 italic">
+          <p className="text-center text-sm text-gray-500 dark:text-gray-400 py-4 italic">
             No categories added yet. Tap below to start.
           </p>
         )}
@@ -58,7 +58,7 @@ export function CategoryAllocationList({
         {activeCategories.map((cat: AppCategory) => (
           <div
             key={cat.id}
-            className="flex items-center gap-4 rounded-xl border border-gray-50 bg-gray-50 p-3 dark:bg-gray-800/50 dark:border-gray-800 group"
+            className="flex items-center gap-4 rounded-xl border border-gray-50 bg-gray-50 p-3 dark:bg-gray-800 dark:border-gray-700 group"
           >
             <div
               className={clsx(
@@ -80,7 +80,7 @@ export function CategoryAllocationList({
                 type="number"
                 value={allocations[cat.id] || ""}
                 onChange={(e) => onAllocate(cat.id, Number(e.target.value))}
-                className="h-9 bg-white text-right pr-2 dark:bg-gray-900"
+                className="h-9 bg-white text-right pr-2 dark:bg-gray-900 dark:border-gray-600 dark:text-white"
                 placeholder="0"
               />
             </div>

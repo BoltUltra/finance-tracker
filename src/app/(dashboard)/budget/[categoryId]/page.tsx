@@ -101,8 +101,10 @@ export default function CategoryDetailPage() {
         >
           {category.icon && <category.icon className="h-8 w-8" />}
         </div>
-        <h2 className="text-xl font-bold text-gray-900">{category.label}</h2>
-        <p className="text-sm text-gray-500">
+        <h2 className="text-xl font-bold text-gray-900 dark:text-gray-50">
+          {category.label}
+        </h2>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
           {transactions.length} transactions
         </p>
       </div>

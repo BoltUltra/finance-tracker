@@ -11,7 +11,7 @@ import {
   EyeOff,
   Loader2,
 } from "lucide-react";
-import AddTransactionModal from "@/components/transactions/AddTransactionModal";
+import { AddTransactionDrawer } from "@/components/transactions/AddTransactionDrawer";
 import { clsx } from "clsx";
 import SafeToSpendCard from "@/components/dashboard/SafeToSpendCard";
 import BudgetProgress from "@/components/dashboard/BudgetProgress";
@@ -35,10 +35,10 @@ import { RecentTransactions } from "@/components/dashboard/RecentTransactions";
 export default function DashboardPage() {
   const { user } = useAuth();
   const { userData, loading, error } = useUserData();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalType, setModalType] = useState<"expense" | "income" | "transfer">(
-    "expense",
-  );
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [drawerType, setDrawerType] = useState<
+    "expense" | "income" | "transfer"
+  >("expense");
 
   // Budget State
   const [budgetUsed, setBudgetUsed] = useState(0);
@@ -80,7 +80,7 @@ export default function DashboardPage() {
     if (user) {
       fetchBudgetUsage();
     }
-  }, [user, isModalOpen]);
+  }, [user, isDrawerOpen]);
 
   if (loading) {
     return (
@@ -108,18 +108,18 @@ export default function DashboardPage() {
   const monthlyBudget = userData?.monthlyBudget || 0;
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className=" min-h-screen">
       <MobileHeader />
 
       <div className="space-y-4">
         <HomeBalanceCarousel
           onAdd={() => {
-            setModalType("expense");
-            setIsModalOpen(true);
+            setDrawerType("expense");
+            setIsDrawerOpen(true);
           }}
           onTransfer={() => {
-            setModalType("transfer");
-            setIsModalOpen(true);
+            setDrawerType("transfer");
+            setIsDrawerOpen(true);
           }}
         />
 
@@ -138,10 +138,10 @@ export default function DashboardPage() {
         <RecentTransactions />
       </div>
 
-      <AddTransactionModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        initialType={modalType}
+      <AddTransactionDrawer
+        open={isDrawerOpen}
+        onOpenChange={setIsDrawerOpen}
+        initialType={drawerType}
       />
     </div>
   );

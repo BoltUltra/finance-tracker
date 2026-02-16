@@ -36,7 +36,7 @@ export function ViewTransactionDrawer({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent className="max-h-[90vh] font-outfit">
+      <DrawerContent className="max-h-[90vh] font-outfit bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800">
         <DrawerHeader className="border-b">
           <DrawerTitle className="text-center">Transaction Details</DrawerTitle>
         </DrawerHeader>

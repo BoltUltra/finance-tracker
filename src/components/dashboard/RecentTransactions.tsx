@@ -6,6 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import { TransactionItem } from "@/components/transactions/TransactionItem";
 import { EditTransactionDrawer } from "@/components/transactions/EditTransactionDrawer";
 import { ViewTransactionDrawer } from "@/components/transactions/ViewTransactionDrawer";
+import { AddTransactionDrawer } from "@/components/transactions/AddTransactionDrawer";
 import { deleteTransaction } from "@/services/transactionService";
 import { Transaction } from "@/types/transaction";
 import { toast } from "sonner";
@@ -111,6 +112,9 @@ export function RecentTransactions() {
         onEdit={() => handleEdit(selectedTransaction!)}
         onDelete={() => handleDelete(selectedTransaction!)}
       />
+
+      {/* Kept here if we add an 'Add' button in this component headers later, though currently BalanceCard handles it */}
+      {/* <AddTransactionDrawer open={false} onOpenChange={() => {}} /> */}
     </div>
   );
 }

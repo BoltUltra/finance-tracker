@@ -96,12 +96,12 @@ export function CreateBudgetDrawer({
     <Drawer open={open} onOpenChange={onOpenChange} dismissible={false}>
       <DrawerTrigger asChild>{children}</DrawerTrigger>
       <DrawerContent
-        className="fixed inset-x-0 bottom-0 mt-24 flex h-[90vh] flex-col rounded-t-[10px] bg-background outline-none"
+        className="fixed inset-x-0 bottom-0 mt-24 flex h-[90vh] flex-col rounded-t-[10px] bg-white dark:bg-gray-900 outline-none"
         onPointerDownOutside={() => onOpenChange?.(false)}
       >
         <div className="flex-none">
           <DrawerHeader>
-            <DrawerTitle className="text-center text-lg font-bold">
+            <DrawerTitle className="text-center text-lg font-bold text-gray-900 dark:text-gray-100">
               Create Budget
             </DrawerTitle>
           </DrawerHeader>
@@ -117,8 +117,8 @@ export function CreateBudgetDrawer({
           </div>
         </div>
 
-        <div className="flex-none border-t border-gray-100 bg-white p-6 dark:border-gray-800 dark:bg-gray-950">
-          <div className="mx-auto mb-4 flex w-full max-w-xs items-center justify-center gap-2 rounded-full bg-gray-50 py-2 dark:bg-gray-900">
+        <div className="flex-none border-t border-gray-100 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
+          <div className="mx-auto mb-4 flex w-full max-w-xs items-center justify-center gap-2 rounded-full bg-gray-50 py-2 dark:bg-gray-800">
             <span className="text-xs text-gray-500 dark:text-gray-400">
               Amount left:
             </span>

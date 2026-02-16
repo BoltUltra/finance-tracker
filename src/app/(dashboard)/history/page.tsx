@@ -123,7 +123,7 @@ export default function HistoryPage() {
   });
 
   return (
-    <div className="container mx-auto max-w-5xl space-y-6 pb-24 md:pb-8">
+    <div className="container mx-auto max-w-5xl space-y-6 pb-24 md:pb-8 p-4">
       {/* Header with Export */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
@@ -134,7 +134,7 @@ export default function HistoryPage() {
             View and filter all your transactions
           </p>
         </div>
-        <ExportButton transactions={filteredTransactions} />
+        {/* <ExportButton transactions={filteredTransactions} /> */}
       </div>
 
       {/* Grid Layout: Chart on top, then Filters & List */}
