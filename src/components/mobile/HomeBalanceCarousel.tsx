@@ -214,13 +214,13 @@ function BalanceCard({
               onClick={onAdd}
               className="bg-white/10 hover:bg-white/20 text-white border-0 backdrop-blur-sm h-12"
             >
-              <Plus className="mr-1 h-4 w-4" /> Add Transaction
+              <Plus className="mr-2 h-4 w-4" /> Add Entry
             </Button>
             <Button
               onClick={onTransfer}
               className="bg-white/10 hover:bg-white/20 text-white border-0 backdrop-blur-sm h-12"
             >
-              <ArrowUpRight className="mr-1 h-4 w-4" /> Transfer
+              <ArrowUpRight className="mr-2 h-4 w-4" /> Transfer
             </Button>
           </div>
         )}
